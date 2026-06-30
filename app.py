@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
-import sqlite3
+import psycopg2
+import psycopg2.extras
+from psycopg2.errors import UniqueViolation as IntegrityError
 import requests
 import smtplib
 from email.mime.text import MIMEText
@@ -56,10 +58,27 @@ def verify_turnstile(token):
     except:
         return False
 
+class DBConnectionWrapper:
+    def __init__(self, conn):
+        self.conn = conn
+
+    def execute(self, query, vars=None):
+        cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        # Convert sqlite ? to postgres %s
+        query = query.replace('?', '%s')
+        cur.execute(query, vars)
+        return cur
+
+    def commit(self):
+        self.conn.commit()
+
+    def close(self):
+        self.conn.close()
+
 def get_db_connection():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+    database_url = os.getenv("DATABASE_URL")
+    conn = psycopg2.connect(database_url)
+    return DBConnectionWrapper(conn)
 
 def send_telegram_notice(message):
     try:
@@ -189,7 +208,7 @@ def register():
             conn.commit()
             flash('Registration successful! Please login.', 'success')
             return redirect(url_for('login'))
-        except sqlite3.IntegrityError:
+        except IntegrityError:
             flash('Username or email already exists.', 'error')
         finally:
             conn.close()

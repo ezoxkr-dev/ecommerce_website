@@ -1,9 +1,17 @@
-import sqlite3
+import psycopg2
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def make_admin(username):
-    conn = sqlite3.connect('database.db')
+    database_url = os.getenv("DATABASE_URL")
+    if not database_url:
+        print("Error: DATABASE_URL not found in .env")
+        return
+    conn = psycopg2.connect(database_url)
     cursor = conn.cursor()
-    cursor.execute("UPDATE users SET role = 'admin' WHERE username = ?", (username,))
+    cursor.execute("UPDATE users SET role = 'admin' WHERE username = %s", (username,))
     conn.commit()
     count = cursor.rowcount
     conn.close()
