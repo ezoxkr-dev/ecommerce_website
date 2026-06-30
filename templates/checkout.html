@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout - Ezox Bypass{% endblock %}
+
+{% block content %}
+<section class="checkout-section">
+    <div class="checkout-wrapper" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+        
+        <!-- Payment Stepper -->
+        <div class="payment-stepper glass-panel">
+            <div class="step active">
+                <div class="step-icon">1</div>
+                <div class="step-text">
+                    <span class="step-title">Step 1</span>
+                    <span class="step-desc">Payment section</span>
+                </div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step">
+                <div class="step-icon">2</div>
+                <div class="step-text">
+                    <span class="step-title">Step 2</span>
+                    <span class="step-desc">Waiting for payment</span>
+                </div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step">
+                <div class="step-icon">3</div>
+                <div class="step-text">
+                    <span class="step-title">Step 3</span>
+                    <span class="step-desc">Blockchain network confirmation</span>
+                </div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step">
+                <div class="step-icon">4</div>
+                <div class="step-text">
+                    <span class="step-title">Step 4</span>
+                    <span class="step-desc">Order status change</span>
+                </div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step">
+                <div class="step-icon">5</div>
+                <div class="step-text">
+                    <span class="step-title">Step 5</span>
+                    <span class="step-desc">Email confirmation</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checkout-container-pro">
+        <!-- Left Column: Summary & Notes -->
+        <div class="checkout-summary glass-panel">
+            <h2>Order <span class="text-gradient">Summary</span></h2>
+            <div class="product-highlight">
+                <p>Selected Product:</p>
+                <h3>{{ product }}</h3>
+            </div>
+
+            {% if 'Emulator' in product %}
+            <div class="product-notes">
+                <h4>FULL PACKAGE — Emulator BYPASS + HAX</h4>
+                <ul>
+                    <li><strong>HAX Features:</strong> Mod Skin, Visibility Check, Kill Message, Bullet Track, Aimbot</li>
+                    <li><strong>BYPASS:</strong> Works on Gameloop — supports Metro Royale, Ultimate Royale, Classic, WOW — safe for ranking (use at your own risk)</li>
+                    <li>Support provided after purchase</li>
+                </ul>
+                <div class="warning-box">
+                    <p><strong>Note:</strong> HAX requires BYPASS (included in this package).</p>
+                    <p>Windows 10/11 with the latest Microsoft C++ Runtime required.</p>
+                    <p class="text-danger">No refunds after the key is sent, including bans or GameLoop/PC issues.</p>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if 'Android' in product %}
+            <div class="product-notes">
+                <h4>Android 4.3 Package</h4>
+                <ul>
+                    <li>Minimalistic ESP, Visibility check, Aimbot.</li>
+                    <li>Support provided after purchase.</li>
+                </ul>
+                <div class="warning-box">
+                    <p class="text-danger">No refunds after the key is sent.</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Right Column: Payment & Form -->
+        <div class="checkout-payment glass-panel">
+            <h3 style="margin-bottom: 20px;">Select Payment Method</h3>
+            
+            <div class="payment-tabs">
+                <div class="payment-tab active" onclick="selectPayment('binance_id')">
+                    <i class="fa-brands fa-bitcoin"></i> Binance USDT
+                </div>
+                <div class="payment-tab" onclick="selectPayment('binance_net')">
+                    <i class="fa-solid fa-network-wired"></i> Binance Network
+                </div>
+                <div class="payment-tab" onclick="selectPayment('paypal')">
+                    <i class="fa-brands fa-paypal"></i> PayPal
+                </div>
+                <div class="payment-tab" onclick="selectPayment('card')">
+                    <i class="fa-regular fa-credit-card"></i> Card
+                </div>
+            </div>
+
+            <div class="payment-content">
+                <!-- Binance USDT (ID) -->
+                <div id="content-binance-id" class="method-card payment-pane active-pane">
+                    <h3><i class="fa-brands fa-bitcoin" style="color: #f3ba2f;"></i> Binance Pay (Internal)</h3>
+                    <p>Transfer via Binance Pay using the ID below.</p>
+                    <div class="qr-box">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px;">
+                            <p style="font-size: 1.1rem; color: #000; margin: 0;"><strong>Binance ID:</strong> <span id="binance-id">1008822202</span></p>
+                            <button type="button" class="btn-copy" onclick="copyText('binance-id')">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                            <p style="font-size: 1.1rem; color: #000; margin: 0;"><strong>Name:</strong> <span id="binance-name">Kaijuno_8</span></p>
+                            <button type="button" class="btn-copy" onclick="copyText('binance-name')">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Binance Network (Crypto) -->
+                <div id="content-binance-net" class="method-card payment-pane">
+                    <h3><i class="fa-solid fa-network-wired" style="color: #f3ba2f;"></i> Binance Network (Crypto Transfer)</h3>
+                    <p>Send USDT via the BNB Smart Chain.</p>
+                    <div class="qr-box" style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap; background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; margin-top: 20px;">
+                        <!-- QR Code Image -->
+                        <div style="flex: 0 0 auto;">
+                            <img src="{{ url_for('static', filename='assets/binance_qr.jpg') }}" alt="USDT QR Code" class="qr-code" style="max-width: 250px; height: auto; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                        </div>
+                        
+                        <!-- Details & Copy -->
+                        <div style="flex: 1 1 250px; text-align: left;">
+                            <h4 style="margin-bottom: 10px; color: #f3ba2f; font-size: 1.1rem;"><i class="fa-solid fa-network-wired"></i> Network</h4>
+                            <p style="font-size: 1rem; color: #fff; margin-bottom: 20px;">BNB Smart Chain (BEP20)</p>
+                            
+                            <h4 style="margin-bottom: 10px; color: #f3ba2f; font-size: 1.1rem;"><i class="fa-solid fa-wallet"></i> Wallet Address</h4>
+                            <div style="background: rgba(0,0,0,0.2); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px;">
+                                <p class="wallet-address" id="wallet-addr" style="font-size: 0.95rem; word-break: break-all; margin: 0; color: #fff;">0x332105afa88cdabb78b63b495dc492b32c641484</p>
+                            </div>
+                            
+                            <button type="button" class="btn-copy btn-primary" onclick="copyText('wallet-addr')" style="padding: 8px 20px; font-size: 0.9rem; width: 100%; border-radius: 6px;">
+                                <i class="fa-regular fa-copy"></i> Copy Address
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PayPal -->
+                <div id="content-paypal" class="method-card payment-pane">
+                    <h3><i class="fa-brands fa-paypal" style="color: #00457C;"></i> PayPal</h3>
+                    <p>Buy a Binance USDT Gift Card via PayPal and paste the code below.</p>
+                    <div class="gift-card-links">
+                        <a href="https://ar-pay.com/en/category/binance-gift-card-usdt" target="_blank" class="btn btn-outline"><i class="fa-solid fa-gift"></i> Buy via AR-PAY</a>
+                        <a href="https://coingate.com/gift-cards/binance-gift-card-usdt" target="_blank" class="btn btn-outline"><i class="fa-solid fa-gift"></i> Buy via CoinGate</a>
+                    </div>
+                </div>
+
+                <!-- Card -->
+                <div id="content-card" class="method-card payment-pane">
+                    <h3><i class="fa-brands fa-cc-visa" style="color: #1a1f71;"></i> <i class="fa-brands fa-cc-mastercard" style="color: #eb001b;"></i> Credit / Debit Card</h3>
+                    <p>Buy a Binance USDT Gift Card using your card and paste the code below.</p>
+                    <div class="gift-card-links">
+                        <a href="https://ar-pay.com/en/category/binance-gift-card-usdt" target="_blank" class="btn btn-outline"><i class="fa-solid fa-gift"></i> Buy via AR-PAY</a>
+                        <a href="https://coingate.com/gift-cards/binance-gift-card-usdt" target="_blank" class="btn btn-outline"><i class="fa-solid fa-gift"></i> Buy via CoinGate</a>
+                    </div>
+                </div>
+            </div>
+
+            <form method="POST" class="auth-form checkout-form" style="margin-top: 30px;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <label for="payment_method">Confirm Payment Method Used</label>
+                    <select id="payment_method" name="payment_method" required class="form-input">
+                        <option value="Binance Pay (ID)">Binance USDT (Pay ID)</option>
+                        <option value="Binance Network (Crypto)">Binance Network (Crypto Transfer)</option>
+                        <option value="PayPal (Gift Card)">PayPal (USDT Gift Card)</option>
+                        <option value="Card (Gift Card)">MasterCard/Visa (USDT Gift Card)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="code">Transaction Hash / Gift Card Code</label>
+                    <input type="text" id="code" name="code" required class="form-input" placeholder="Paste TXID or Gift Card Code here">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-paper-plane"></i> Submit Payment for Verification</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function copyText(elementId) {
+        const text = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    }
+
+    function selectPayment(method) {
+        document.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.payment-pane').forEach(p => p.classList.remove('active-pane'));
+        
+        if(method === 'binance_id') {
+            document.querySelectorAll('.payment-tab')[0].classList.add('active');
+            document.getElementById('content-binance-id').classList.add('active-pane');
+            document.getElementById('payment_method').value = "Binance Pay (ID)";
+        } else if (method === 'binance_net') {
+            document.querySelectorAll('.payment-tab')[1].classList.add('active');
+            document.getElementById('content-binance-net').classList.add('active-pane');
+            document.getElementById('payment_method').value = "Binance Network (Crypto)";
+        } else if (method === 'paypal') {
+            document.querySelectorAll('.payment-tab')[2].classList.add('active');
+            document.getElementById('content-paypal').classList.add('active-pane');
+            document.getElementById('payment_method').value = "PayPal (Gift Card)";
+        } else if (method === 'card') {
+            document.querySelectorAll('.payment-tab')[3].classList.add('active');
+            document.getElementById('content-card').classList.add('active-pane');
+            document.getElementById('payment_method').value = "Card (Gift Card)";
+        }
+    }
+</script>
+{% endblock %}

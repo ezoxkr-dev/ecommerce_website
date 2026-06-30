@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="home-notice" class="update-notice"
+    style="position: sticky; top: 70px; margin-top: -70px; opacity: 1; transition: opacity 0.5s ease;">
+    <div class="spinner-small"></div>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <span>🔥 PUBG 4.4 Update Loading...</span>
+    </div>
+    <span class="notice-badge">Live Status</span>
+</div>
+
+<script>
+    setTimeout(function () {
+        const notice = document.getElementById('home-notice');
+        if (notice) {
+            notice.style.opacity = '0';
+            setTimeout(() => notice.remove(), 500);
+        }
+    }, 3000);
+</script>
+<section id="home" class="hero">
+    <div class="hero-content">
+        <div class="badge">Safe & Undetected 4.3</div>
+        <h1>Dominate with <span class="text-gradient">Ezox Bypass</span></h1>
+        <p>The safest and most powerful Emulator and Android bypass. Smooth gameplay, zero risk, and instant delivery.
+        </p>
+
+        <div style="margin: 20px 0; color: var(--purple-light); font-weight: 600;">
+            <p>🌍 Supports PUBG Global, Korea, Vietnam, & Taiwan versions</p>
+            <p style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted); margin-top: 5px;">Join thousands of
+                satisfied players using the most trusted bypass in the market.</p>
+        </div>
+
+        <div class="hero-cta">
+            <a href="#pricing" class="btn btn-primary">View Products</a>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="features-section">
+    <div class="section-header">
+        <h2>Why you should choose <span class="text-gradient">EZOX?</span></h2>
+        <p>The ultimate advantage in the battlefield</p>
+    </div>
+    <div class="why-choose-grid">
+        <div class="glass-panel feature-box">
+            <h4>Premium UI</h4>
+            <p>Premium UI on BP & HAX</p>
+        </div>
+        <div class="glass-panel feature-box">
+            <h4>No Sideload</h4>
+            <p>No apk obb sideload</p>
+        </div>
+        <div class="glass-panel feature-box">
+            <h4>Stable</h4>
+            <p>No messing up with your internet</p>
+        </div>
+        <div class="glass-panel feature-box">
+            <h4>Fast Updates</h4>
+            <p>Fast update</p>
+        </div>
+        <div class="glass-panel feature-box">
+            <h4>Best Skin Mods</h4>
+            <p>Best skin mods</p>
+        </div>
+        <div class="glass-panel feature-box">
+            <h4>Maximum Safety</h4>
+            <p>10 min to 10 year ban safe</p>
+        </div>
+    </div>
+</section>
+
+{% if gallery_images|length > 0 %}
+<!-- Image Slideshow Section -->
+<section id="gallery" class="gallery-section"
+    style="padding: 60px 20px; max-width: 700px; margin: 0 auto; text-align: center;">
+    <div class="section-header">
+        <h2>Visuals <span class="text-gradient">Gallery</span></h2>
+        <p>A glimpse into the Ezox experience</p>
+    </div>
+
+    <!-- Outer frame for the slider -->
+    <div
+        style="border: 4px solid var(--purple-main); border-radius: 16px; padding: 10px; background: rgba(10,10,15,0.8); box-shadow: 0 0 25px var(--purple-glow); margin: auto; overflow: hidden; position: relative;">
+
+        <div id="slider-track" data-slides-count="{{ gallery_images|length }}"
+            style="display: flex; transition: transform 0.5s ease-in-out; width: 100%;">
+            {% for image in gallery_images %}
+            <div class="slide-item"
+                style="min-width: 100%; display: flex; justify-content: center; align-items: center;">
+                <img src="{{ url_for('static', filename=image) }}"
+                    style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block;">
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Navigation Buttons -->
+        {% if gallery_images|length > 1 %}
+        <a style="cursor: pointer; position: absolute; top: 50%; left: 15px; transform: translateY(-50%); color: white; font-size: 24px; font-weight: bold; background: rgba(0,0,0,0.5); padding: 10px 15px; border-radius: 8px; user-select: none;"
+            onclick="moveSlide(-1)">&#10094;</a>
+        <a style="cursor: pointer; position: absolute; top: 50%; right: 15px; transform: translateY(-50%); color: white; font-size: 24px; font-weight: bold; background: rgba(0,0,0,0.5); padding: 10px 15px; border-radius: 8px; user-select: none;"
+            onclick="moveSlide(1)">&#10095;</a>
+        {% endif %}
+    </div>
+</section>
+
+<script>
+    let currentSlideIndex = 0;
+    const track = document.getElementById('slider-track');
+    const slidesCount = parseInt(track.getAttribute('data-slides-count')) || 0;
+
+    function updateSlidePosition() {
+        track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+    }
+
+    function moveSlide(direction) {
+        if (slidesCount <= 1) return;
+        currentSlideIndex = (currentSlideIndex + direction + slidesCount) % slidesCount;
+        updateSlidePosition();
+    }
+
+    // Auto slide right to left every 2 seconds
+    if (slidesCount > 1) {
+        setInterval(() => {
+            moveSlide(1);
+        }, 2000);
+    }
+</script>
+{% endif %}
+
+<section id="showcase" class="showcase-section">
+    <div class="section-header">
+        <h2>Gameplay <span class="text-gradient">Showcase</span></h2>
+        <p>See Ezox Bypass in action</p>
+    </div>
+    <div class="video-grid">
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/WCnYXQ5Cpeg" title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/9_PaPyx0ssc" title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/CpnSSHqjebQ" title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+    </div>
+</section>
+
+<section id="pricing" class="pricing-section">
+    <div class="section-header">
+        <h2>Choose Your <span class="text-gradient">Arsenal</span></h2>
+        <p>Premium features at unbeatable prices</p>
+    </div>
+
+    <h3 class="category-title">Emulator BYPASS + HAX 4.3</h3>
+    <div class="pricing-grid">
+        <div class="pricing-card">
+            <div class="card-header">
+                <h4>Starter</h4>
+                <div class="price"><span>$</span>5</div>
+                <p class="duration">1 Day</p>
+            </div>
+            <ul class="features">
+                <li>Customizable ESP (Player, BOT, AI BOT, Monsters)</li>
+                <li>Visibility check</li>
+                <li>Bullet Track, Aimbot (adjustable power)</li>
+                <li>Ipad View</li>
+                <li>Radar (360 enemy view)</li>
+                <li>Mod Skin (See before using)</li>
+                <li>Auto save configuration</li>
+            </ul>
+            <a href="{{ url_for('checkout', product='Emulator Starter 1D') }}" class="btn btn-block btn-outline">Buy
+                Now</a>
+        </div>
+        <div class="pricing-card">
+            <div class="card-header">
+                <h4>Weekly</h4>
+                <div class="price"><span>$</span>12</div>
+                <p class="duration">7 Days</p>
+            </div>
+            <ul class="features">
+                <li>Customizable ESP (Player, BOT, AI BOT, Monsters)</li>
+                <li>Visibility check</li>
+                <li>Bullet Track, Aimbot (adjustable power)</li>
+                <li>Ipad View</li>
+                <li>Radar (360 enemy view)</li>
+                <li>Mod Skin (See before using)</li>
+                <li>Auto save configuration</li>
+            </ul>
+            <a href="{{ url_for('checkout', product='Emulator Weekly 7D') }}" class="btn btn-block btn-outline">Buy
+                Now</a>
+        </div>
+        <div class="pricing-card popular">
+            <div class="popular-badge">Most Popular</div>
+            <div class="card-header">
+                <h4>Monthly</h4>
+                <div class="price"><span>$</span>30</div>
+                <p class="duration">30 Days</p>
+            </div>
+            <ul class="features">
+                <li>Customizable ESP (Player, BOT, AI BOT, Monsters)</li>
+                <li>Visibility check</li>
+                <li>Bullet Track, Aimbot (adjustable power)</li>
+                <li>Ipad View</li>
+                <li>Radar (360 enemy view)</li>
+                <li>Mod Skin (See before using)</li>
+                <li>Auto save configuration</li>
+            </ul>
+            <a href="{{ url_for('checkout', product='Emulator Monthly 30D') }}" class="btn btn-block btn-primary">Buy
+                Now</a>
+        </div>
+        <div class="pricing-card">
+            <div class="card-header">
+                <h4>Season</h4>
+                <div class="price"><span>$</span>55</div>
+                <p class="duration">60 Days</p>
+            </div>
+            <ul class="features">
+                <li>Customizable ESP (Player, BOT, AI BOT, Monsters)</li>
+                <li>Visibility check</li>
+                <li>Bullet Track, Aimbot (adjustable power)</li>
+                <li>Ipad View</li>
+                <li>Radar (360 enemy view)</li>
+                <li>Mod Skin (See before using)</li>
+                <li>Auto save configuration</li>
+            </ul>
+            <a href="{{ url_for('checkout', product='Emulator Season 60D') }}" class="btn btn-block btn-outline">Buy
+                Now</a>
+        </div>
+    </div>
+
+    <h3 class="category-title mt-5">ANDROID 4.3</h3>
+    <div class="pricing-grid grid-3">
+        <div class="pricing-card">
+            <div class="card-header">
+                <h4>Starter</h4>
+                <div class="price"><span>$</span>3</div>
+                <p class="duration">1 Day</p>
+            </div>
+            <ul class="features">
+                <li>Minimalistic ESP</li>
+                <li>Visibility check</li>
+                <li>Aimbot</li>
+            </ul>
+            <a href="{{ url_for('checkout', product='Android Starter 1D') }}" class="btn btn-block btn-outline">Buy
+                Now</a>
+        </div>
+        <div class="pricing-card">
+            <div class="card-header">
+                <h4>Weekly</h4>
+                <div class="price"><span>$</span>12</div>
+                <p class="duration">7 Days</p>
+            </div>
+            <ul class="features">
+                <li>Minimalistic ESP</li>
+                <li>Visibility check</li>
+                <li>Aimbot</li>
+            </ul>
+            <a href="{{ url_for('checkout', product='Android Weekly 7D') }}" class="btn btn-block btn-outline">Buy
+                Now</a>
+        </div>
+        <div class="pricing-card popular">
+            <div class="popular-badge">Best Value</div>
+            <div class="card-header">
+                <h4>Monthly</h4>
+                <div class="price"><span>$</span>25</div>
+                <p class="duration">30 Days</p>
+            </div>
+            <ul class="features">
+                <li>Minimalistic ESP</li>
+                <li>Visibility check</li>
+                <li>Aimbot</li>
+            </ul>
+            <a href="{{ url_for('checkout', product='Android Monthly 30D') }}" class="btn btn-block btn-primary">Buy
+                Now</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

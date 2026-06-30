@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Ezox Bypass{% endblock %}
+
+{% block content %}
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+<section class="dashboard-section">
+    <div class="dashboard-container" style="width: 95%; max-width: 1600px; margin: 0 auto;">
+        <div class="section-header text-left">
+            <h2>Command <span class="text-gradient">Center</span></h2>
+            <p>Manage users, verify payments, and monitor metrics</p>
+        </div>
+        
+        <!-- Metrics Grid -->
+        <div class="metric-grid">
+            <div class="metric-card">
+                <i class="fa-solid fa-users"></i>
+                <div class="metric-value">{{ metrics.total_users }}</div>
+                <div class="metric-label">Total Users</div>
+            </div>
+            <div class="metric-card">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <div class="metric-value">{{ metrics.total_orders }}</div>
+                <div class="metric-label">Total Orders</div>
+            </div>
+            <div class="metric-card" style="border-color: rgba(243, 156, 18, 0.3);">
+                <i class="fa-solid fa-clock" style="color: #f39c12;"></i>
+                <div class="metric-value" style="color: #f39c12;">{{ metrics.pending_orders }}</div>
+                <div class="metric-label">Pending Orders</div>
+            </div>
+            <div class="metric-card" style="border-color: rgba(46, 204, 113, 0.3);">
+                <i class="fa-solid fa-check-circle" style="color: #2ecc71;"></i>
+                <div class="metric-value" style="color: #2ecc71;">{{ metrics.completed_orders }}</div>
+                <div class="metric-label">Completed Orders</div>
+            </div>
+            <div class="metric-card" style="border-color: rgba(241, 196, 15, 0.3);">
+                <i class="fa-solid fa-star" style="color: #f1c40f;"></i>
+                <div class="metric-value" style="color: #f1c40f;">{{ metrics.avg_rating }} / 5</div>
+                <div class="metric-label">Avg Rating</div>
+            </div>
+        </div>
+        
+        <div class="dashboard-grid" style="grid-template-columns: 1fr; gap: 30px;">
+            <div class="glass-panel p-4 table-container">
+                <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-list-check" style="color: var(--purple-main);"></i> Order Management</h3>
+                <div class="table-responsive">
+                    <table id="ordersTable" class="data-table" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>Date/Time</th>
+                                <th>Order ID</th>
+                                <th>User</th>
+                                <th>Product</th>
+                                <th>Method</th>
+                                <th>Code/TXID</th>
+                                <th>Status</th>
+                                <th>Review</th>
+                                <th style="min-width: 280px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                            <tr>
+                                <td>{{ order.created_at }}</td>
+                                <td>{{ order.order_id }}</td>
+                                <td>{{ order.username }}</td>
+                                <td>{{ order.product }}</td>
+                                <td>{{ order.payment_method }}</td>
+                                <td><code class="tx-code">{{ order.code }}</code></td>
+                                <td>
+                                    <span class="status-badge status-{{ order.status|lower }}">{{ order.status }}</span>
+                                </td>
+                                <td>
+                                    {% if order.rating %}
+                                        <div style="color: #f1c40f; font-size: 0.9rem; margin-bottom: 5px;">
+                                            {% for _ in range(order.rating) %}★{% endfor %}{% for _ in range(5 - order.rating) %}☆{% endfor %}
+                                        </div>
+                                        {% if order.review %}
+                                            <div style="font-size: 0.75rem; color: var(--text-dim); max-width: 150px; white-space: normal; line-height: 1.2;">"{{ order.review }}"</div>
+                                        {% endif %}
+                                    {% else %}
+                                        <span style="color: var(--text-dim); font-size: 0.8rem;">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <form action="{{ url_for('update_order_status', order_id=order.id) }}" method="POST" style="display:flex; flex-direction:column; gap:0.5rem;">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <div style="display:flex; gap:0.5rem; align-items:center;">
+                                            <select name="status" class="form-input" style="padding: 0.25rem 0.5rem; font-size: 0.85rem; height: auto; flex-grow: 1;">
+                                                <option value="Pending" {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                                <option value="Completed" {% if order.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                                <option value="Rejected" {% if order.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-primary" style="padding: 0.25rem 1rem; font-size: 0.85rem; min-width: 80px; flex-shrink: 0; white-space: nowrap;">Save</button>
+                                        </div>
+                                        <textarea name="admin_message" class="form-input" style="font-size: 0.8rem; padding: 0.5rem; min-height: 120px; width: 100%; resize: vertical;" placeholder="Message to buyer (sent on completion)">{% if order.admin_message %}{{ order.admin_message }}{% else %}Hello! 👋 Thank you for your order.
+
+Download: https://mega.nz/folder/athU1YDC#7fiOLN6E7RtXx6GCq7J8BA
+Password: 1 (if needed)
+
+⚠️ Windows 10 or 11 is required. Please ensure that the latest version of the Microsoft C++ Runtime and DirectX drivers are installed.
+
+Bypass Key: 
+Hax Key: 
+
+Join our communities: https://t.me/ezoxbypass https://discord.gg/yYZB9Xtcfz{% endif %}</textarea>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="glass-panel p-4 table-container">
+                <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-users" style="color: var(--purple-main);"></i> Registered Users</h3>
+                <div class="table-responsive">
+                    <table id="usersTable" class="data-table" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td><span class="status-badge {% if user.role == 'admin' %}status-completed{% else %}status-pending{% endif %}">{{ user.role }}</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DataTables JS and Initialization -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#ordersTable').DataTable({
+            "order": [[0, "desc"]], // Sort by Order ID descending
+            "pageLength": 10,
+            "scrollX": true,
+            "language": {
+                "search": "Search Orders:",
+                "lengthMenu": "Show _MENU_ orders per page",
+                "info": "Showing _START_ to _END_ of _TOTAL_ orders"
+            }
+        });
+        
+        $('#usersTable').DataTable({
+            "order": [[0, "desc"]], // Sort by ID descending
+            "pageLength": 10,
+            "scrollX": true,
+            "language": {
+                "search": "Search Users:"
+            }
+        });
+    });
+</script>
+{% endblock %}
